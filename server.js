@@ -4,6 +4,13 @@ const app = express();
 
 const PORT = 3000;
 
+
+
+
+
+
+
+
 app.listen(PORT,()=>{
-    console.log("Server started on port 3000");
+    console.log(`Server running on https://localhost:${PORT}`);
 });
