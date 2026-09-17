@@ -1,8 +1,8 @@
-##                    Ride Booking Backend
+                 Ride Booking Backend
                             │
              ┌──────────────┴──────────────┐
              │                             │
-  ##        DRIVERS                         RIDES
+          DRIVERS                         RIDES
              │                             │
       ┌──────┼──────┐              ┌───────┼────────┐
       │      │      │              │       │        │
