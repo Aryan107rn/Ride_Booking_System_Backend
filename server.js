@@ -8,6 +8,10 @@ const PORT = 3000;
 
 app.use(express.json());
 
+app.get("/drivers",(req,res)=>{
+res.json(drivers);
+});
+
 app.listen(PORT,()=>{
     console.log(`Server running on https://localhost:${PORT}`);
 });
