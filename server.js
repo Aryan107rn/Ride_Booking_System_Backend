@@ -8,6 +8,10 @@ const PORT = 3000;
 
 app.use(express.json());
 
+app.get("/",(req,res)=>{
+    res.send("Welcome " + "Book your ride");
+});
+
 app.get("/driver", (req, res) => {
     res.json(drivers);
 });
