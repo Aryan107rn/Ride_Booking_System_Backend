@@ -32,6 +32,9 @@ app.get("/driver/:id", (req, res) => {
     res.json(driver);
 }); 
 
+app.get("/driver?available=true",(req,res)=>{
+    
+});
 app.listen(PORT, () => {
     console.log(`Server running on http://localhost:${PORT}`);
 });
