@@ -6,31 +6,36 @@ const app = express();
 
 const PORT = 3000;
 
+// Middleware
 app.use(express.json());
 
-// Home
 app.get("/", (req, res) => {
     res.send("Welcome! Book your ride");
 });
 
-// Get all drivers OR filter by availability
+
 app.get("/driver", (req, res) => {
     const { available } = req.query;
 
-    if (available !== undefined) {
-        const isAvailable = available === "true";
-
-        const filteredDrivers = drivers.filter((driver) => {
-            return driver.available === isAvailable;
-        });
-
-        return res.json(filteredDrivers);
+    // If no query parameter is provided
+    // return all drivers
+    if (available === undefined) {
+        return res.json(drivers);
     }
 
-    res.json(drivers);
+    // Convert query string into boolean
+    const isAvailable = available === "true";
+
+    // Filter drivers
+    const filteredDrivers = drivers.filter((driver) => {
+        return driver.available === isAvailable;
+    });
+
+    res.json(filteredDrivers);
 });
 
-// Get driver by ID
+
+
 app.get("/driver/:id", (req, res) => {
     const id = Number(req.params.id);
 
@@ -46,6 +51,7 @@ app.get("/driver/:id", (req, res) => {
 
     res.json(driver);
 });
+
 
 app.listen(PORT, () => {
     console.log(`Server running on http://localhost:${PORT}`);
