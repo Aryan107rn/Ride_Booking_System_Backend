@@ -8,14 +8,29 @@ const PORT = 3000;
 
 app.use(express.json());
 
-app.get("/",(req,res)=>{
-    res.send("Welcome " + "Book your ride");
+// Home
+app.get("/", (req, res) => {
+    res.send("Welcome! Book your ride");
 });
 
+// Get all drivers OR filter by availability
 app.get("/driver", (req, res) => {
+    const { available } = req.query;
+
+    if (available !== undefined) {
+        const isAvailable = available === "true";
+
+        const filteredDrivers = drivers.filter((driver) => {
+            return driver.available === isAvailable;
+        });
+
+        return res.json(filteredDrivers);
+    }
+
     res.json(drivers);
 });
 
+// Get driver by ID
 app.get("/driver/:id", (req, res) => {
     const id = Number(req.params.id);
 
@@ -30,11 +45,8 @@ app.get("/driver/:id", (req, res) => {
     }
 
     res.json(driver);
-}); 
-
-app.get("/driver?available=true",(req,res)=>{
-    
 });
+
 app.listen(PORT, () => {
     console.log(`Server running on http://localhost:${PORT}`);
 });
