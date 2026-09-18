@@ -12,7 +12,7 @@ app.use(express.json());
 
 // home route
 app.get("/",(req,res)=>{
-    res.send("This is ride booking site backend");
+    res.send("Welcome ! Book your ride");
 });
 
 app.get("/driver",(req,res)=>{
