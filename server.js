@@ -4,30 +4,44 @@ import rides from "./data/rides.js";
 
 const app = express();
 
-// middleware
-
 const PORT = 3000;
 
+// Middleware
 app.use(express.json());
 
-// home route
-app.get("/",(req,res)=>{
-    res.send("Welcome ! Book your ride");
+// ============================
+// Home Route
+// ============================
+
+app.get("/", (req, res) => {
+    res.send("Welcome! Book your ride");
 });
 
-app.get("/driver",(req,res)=>{
-    const { available }=req.query;
-    if(available===undefined){
+// ============================
+// Get Drivers
+// ============================
+
+app.get("/driver", (req, res) => {
+    const { available } = req.query;
+
+    // If no query parameter is provided
+    // return all drivers
+    if (available === undefined) {
         return res.json(drivers);
     }
-    const isAvailable=available==="true";
 
-     const filteredDrivers = drivers.filter((driver) => {
+    const isAvailable = available === "true";
+
+    const filteredDrivers = drivers.filter((driver) => {
         return driver.available === isAvailable;
     });
 
     res.json(filteredDrivers);
 });
+
+// ============================
+// Get Driver By ID
+// ============================
 
 app.get("/driver/:id", (req, res) => {
     const id = Number(req.params.id);
@@ -45,7 +59,60 @@ app.get("/driver/:id", (req, res) => {
     res.json(driver);
 });
 
+// ============================
+// Create Ride
+// ============================
 
-app.listen(PORT,()=>{
-     console.log(`Server running on http://localhost:${PORT}`);
+app.post("/ride", (req, res) => {
+    const {
+        userName,
+        pickup,
+        destination,
+        driverId
+    } = req.body;
+
+    // Find driver
+    const driver = drivers.find((driver) => {
+        return driver.id === Number(driverId);
+    });
+
+    // Driver doesn't exist
+    if (!driver) {
+        return res.status(404).json({
+            message: "Driver not found"
+        });
+    }
+
+    // Driver exists but is unavailable
+    if (!driver.available) {
+        return res.status(400).json({
+            message: "Driver is not available"
+        });
+    }
+
+    // Create ride
+    const ride = {
+        id: rides.length + 1,
+        userName,
+        pickup,
+        destination,
+        driverId: Number(driverId),
+        status: "booked"
+    };
+
+    // Store ride
+    rides.push(ride);
+
+    // Make driver unavailable
+    driver.available = false;
+
+    res.status(201).json({
+        message: "Ride created successfully",
+        ride: ride
+    });
+});
+
+
+app.listen(PORT, () => {
+    console.log(`Server running on http://localhost:${PORT}`);
 });
