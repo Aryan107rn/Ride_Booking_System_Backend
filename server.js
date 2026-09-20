@@ -9,23 +9,13 @@ const PORT = 3000;
 // Middleware
 app.use(express.json());
 
-// ============================
-// Home Route
-// ============================
-
 app.get("/", (req, res) => {
     res.send("Welcome! Book your ride");
 });
 
-// ============================
-// Get Drivers
-// ============================
-
 app.get("/driver", (req, res) => {
     const { available } = req.query;
 
-    // If no query parameter is provided
-    // return all drivers
     if (available === undefined) {
         return res.json(drivers);
     }
@@ -39,9 +29,6 @@ app.get("/driver", (req, res) => {
     res.json(filteredDrivers);
 });
 
-// ============================
-// Get Driver By ID
-// ============================
 
 app.get("/driver/:id", (req, res) => {
     const id = Number(req.params.id);
@@ -59,9 +46,6 @@ app.get("/driver/:id", (req, res) => {
     res.json(driver);
 });
 
-// ============================
-// Create Ride
-// ============================
 
 app.post("/ride", (req, res) => {
     const {
